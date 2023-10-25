@@ -1,28 +1,31 @@
-package com.example.app1697879824973
-
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.app1697879824973.R
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var urlWebView: WebView
+    private lateinit var noInternetLayout: LinearLayout
     private var url: String = "https://dev.to/tqbit/quick-dirty-how-to-deploy-a-fullstack-vue-js-app-with-a-working-node-js-backend-51k4" // Default URL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        this.window.setFlags(
+            WindowManager.LayoutParams.FLAG_FULLSCREEN,
+            WindowManager.LayoutParams.FLAG_FULLSCREEN
+        )
         setContentView(R.layout.activity_main)
 
         urlWebView = findViewById(R.id.urlWebView)
+        noInternetLayout = findViewById(R.id.noInternetLayout)
         val webSettings: WebSettings = urlWebView.settings
         webSettings.javaScriptEnabled = true // Enable JavaScript
         webSettings.domStorageEnabled = true // Enable DOM Storage
@@ -30,6 +33,16 @@ class MainActivity : AppCompatActivity() {
         webSettings.allowContentAccess = true // Allow content access
 
         urlWebView.webViewClient = object : WebViewClient() {
+            override fun onReceivedError(
+                view: WebView?,
+                request: WebResourceRequest?,
+                error: WebResourceError?
+            ) {
+                // Display custom no internet connection layout
+                urlWebView.visibility = WebView.GONE
+                noInternetLayout.visibility = LinearLayout.VISIBLE
+            }
+
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 return when {
                     url.startsWith("tel:") -> {
@@ -77,4 +90,3 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
-

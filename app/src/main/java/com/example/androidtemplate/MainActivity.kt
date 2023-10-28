@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var urlWebView: WebView
     private lateinit var noInternetLayout: LinearLayout
     private var url: String = "https://dev.to/tqbit/quick-dirty-how-to-deploy-a-fullstack-vue-js-app-with-a-working-node-js-backend-51k4" // Default URL
-
+    public var USER_AGENT: String =  "Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19";
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -33,6 +33,8 @@ class MainActivity : AppCompatActivity() {
         webSettings.domStorageEnabled = true // Enable DOM Storage
         webSettings.allowFileAccess = true // Allow access to file
         webSettings.allowContentAccess = true // Allow content acces
+
+        webSettings.userAgentString = USER_AGENT;
 
 
         urlWebView.webViewClient = object : WebViewClient() {
